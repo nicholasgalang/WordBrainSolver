@@ -11,5 +11,7 @@ private:
 
 public:
     Board(char* filename);
+   const std::vector< std::vector<char> >& getLetters() const;
+   const std::vector<int> &getLengths() const;
     
 };

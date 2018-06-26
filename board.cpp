@@ -1,9 +1,16 @@
 #include "board.hpp"
 
 
+const std::vector< std::vector<char> > &Board::getLetters() const{
+	return letters;
+}
+
+const std::vector<int> &Board::getLengths() const{
+  return lengths;
+}
 
 Board::Board (char* filename) {
-	ifstream myfile;
+ ifstream myfile;
   myfile.open (filename);
   char line[9][9];
   int counter=0;
@@ -24,8 +31,6 @@ Board::Board (char* filename) {
   	counter++;
   }
 
-
-  //letters=new char[dimension][dimension];
   letters.resize(dimension, std::vector<char>(dimension, 'a'));
 
 

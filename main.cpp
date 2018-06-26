@@ -2,63 +2,43 @@
 #include <fstream>
 #include "board.hpp" 
 using namespace std;
-int main () {
-  // ifstream myfile;
-  // myfile.open ("board.txt");
-  // char line[9][9];
-  // int counter=0;
-  // while(myfile >> line[counter]){
-  // 	counter++;
-  	
-  // }
-  //  myfile.close();
-  // counter=0;
-  // int length;
-  // for(int i=0;i<9;i++){
 
-  // 	bool empty= (line[0][i]=='\0');
-  // 	if(empty){
-  // 		length=counter;
-  // 		break;
-  // 	}
-  // 	counter++;
-  // }
+void print2DVect(const std::vector< std::vector<char> >& vector){
+	for(int i=0;i<vector.size();i++){
+		for(int j=0;j<vector[0].size();j++){
+			std::cout<<vector[i][j];
+		}
+		std::cout<<std::endl;
 
-
-  // char board[length][length];
-
-  // for(int i=0;i<length;i++){
-  // 	for(int j=0;j<length;j++){
-  // 		board[i][j]=line[i][j];
-  // 		std::cout<<board[i][j];
-  // 	}
-  // 	  std::cout<<std::endl;
-  // }
-
-  // counter=0;
-  // while(line[length][counter]!='\0')
-  // 	counter++;
-
-  //  int lengths[counter];
-
-  //  for(int i=0;i<counter;i++){
-  //  	lengths[i]=line[length][i]-'0';
-  //  	std::cout<<lengths[i];
-  //  }
-  //   std::cout<<std::endl;
-
- Board board("board.txt");
-
-
-
- 
-
-
-  // std::cout << "Exit"<<std::endl;
-
-
-  return 0;
+	}
 }
 
-//void readBoard(&)
+void printVect(const std::vector<int> &vector){
+	for(int i=0;i<vector.size();i++){
+	
+			std::cout<<vector[i];
+		
+	}
+		std::cout<<std::endl;
+
+}
+
+void readDictionary();
+
+int main () {
+
+	Board board("board.txt");
+
+	auto const letters=board.getLetters();
+	auto const lengths=board.getLengths();
+
+	print2DVect(letters);
+	printVect(lengths);
+
+
+  	return 0;
+}
+
+
+
 
