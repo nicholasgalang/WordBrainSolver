@@ -1,15 +1,128 @@
 #include "board.hpp"
 
 
+
 const std::vector< std::vector<char> > &Board::getLetters() const{
 	return letters;
 }
 
+//const std::set<std::string> possibleWords(std::string start) const{
+
+   
+
+//}
+
 const std::vector<int> &Board::getLengths() const{
   return lengths;
 }
+const int Board::getDimension() const{
+  return dimension;
+}
 
-Board::Board (char* filename) {
+const bool Board::inbounds(int x,int y){
+  if(x<0 || y<0 || x>=dimension || y>=dimension )
+    return false;
+  return true;
+}
+
+Board Board::drop(std::vector<std::vector<int> > path){
+
+  std::vector< std::vector<char> > newLetters=letters;
+  std::vector<int> newLengths=lengths;
+  for(int i=0;i<path.size();i++){
+    newLetters[path[i][0]][path[i][1]]=0;
+  }
+
+//std::cout<<newLetters[0][1]<<std::endl;
+  for(int i=0;i<newLetters.size();i++){
+    for(int j=0;j<newLetters[i].size();j++){
+      if(newLetters[i][j]==0){
+        int temp=i;
+        //std::cout<<2<<std::endl;
+        while(temp-1>-1 && newLetters[temp-1][j]!=0){
+          //std::cout<<2<<std::endl;
+          newLetters[temp][j]=newLetters[temp-1][j];
+          newLetters[temp-1][j]=0;
+          temp-=1;
+        }
+
+      }
+    }
+  }
+
+  //std::cout<<newLetters[0][1]<<std::endl;
+  return *(new Board(newLetters,newLengths,dictionary,dimension));
+
+} 
+
+
+void Board::getWord(int length,Word word,int x,int y,std::vector<Word> &words){
+  if(length==word.getLetters().size()){
+    if(dictionary.count(word.getLetters())){
+      //std::vector<Word> temp=*(new std::vector<Word>);
+      //temp.push_back(word);
+      //word.printLetters();
+      words.push_back(word);
+
+      return;
+      
+    }
+    else{
+      //return *(new std::vector<Word>());
+      return;
+      
+    }
+
+  }
+
+
+  //std::vector<Word> output=*(new std::vector<Word>);
+
+  //plan to add filter
+  for(int i=-1;i<2;i++){
+    for(int j=-1;j<2;j++){
+      if(!(i==0&&j==0) &&inbounds(x+i,y+j)&&letters[x+i][y+j]!=0&&!word.inPath(x+i,y+j)){
+        Word newWord=word.addLetter(x+i,y+j,letters[x+i][y+j]);
+        //std::vector<Word> temp=
+        getWord(length,newWord,x+i,y+j,words);
+
+        //output.insert(output.end(),temp.begin(),temp.end());
+
+
+
+
+      }
+    }
+  }
+
+ //return output;
+
+}
+
+Board::Board(std::vector< std::vector<char> > &newLetters,std::vector<int> &newLengths,std::set<std::string> &newDictionary,int newdDimension){
+  letters=newLetters;
+  lengths=newLengths;
+  dictionary=newDictionary;
+  dimension=newdDimension;
+}
+void Board::print(){
+  for(int i=0;i<letters.size();i++){
+    std::cout<<endl;
+    for(int j=0;j<letters.size();j++){
+
+      std::cout<<letters[i][j];
+      if(letters[i][j]==0)
+        std::cout<<"0";
+    }
+  }
+   std::cout<<endl;
+   for(int i=0;i<lengths.size();i++)
+    std::cout<<lengths[i];
+     std::cout<<endl;
+}
+
+Board::Board (std::string filename,std::set<std::string> &dictionary1) {
+  dictionary=dictionary1;
  ifstream myfile;
   myfile.open (filename);
   char line[9][9];
@@ -20,7 +133,6 @@ Board::Board (char* filename) {
   }
    myfile.close();
   counter=0;
-  int dimension;
   for(int i=0;i<9;i++){
 
   	bool empty= (line[0][i]=='\0');
