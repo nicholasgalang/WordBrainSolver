@@ -6,11 +6,29 @@ const std::vector< std::vector<char> > &Board::getLetters() const{
 	return letters;
 }
 
-//const std::set<std::string> possibleWords(std::string start) const{
+std::set<std::string> &Board::possibleWords(std::string &start,std::set<std::string> &filteredDictionary){
+
+  std::set<std::string> *newDict=new  std::set<std::string>();
+  //std::cout<<"Filtering Dictionary"<<std::endl;
+    //std::cout<<filteredDictionary.size()<<std::endl;
+  // for (std::set<std::string>::iterator it=filteredDictionary.begin(); it!=filteredDictionary.end(); ++it){
+  //   if(start.compare(it->substr(0,start.size()))==0){
+  //     //std::cout<<"Possilbe word: "<<*it<<std::endl;
+  //     newDict->insert(*it);  
+  //   }
+
+  // }
+  for(auto word:filteredDictionary){
+    if(word.substr(0,start.size())==start)
+       newDict->insert(word);  
+  }
+   //std::cout<<3<<std::endl;
+
+  return *newDict;
 
    
 
-//}
+}
 
 const std::vector<int> &Board::getLengths() const{
   return lengths;
@@ -56,12 +74,17 @@ Board Board::drop(std::vector<std::vector<int> > path){
 } 
 
 
-void Board::getWord(int length,Word word,int x,int y,std::vector<Word> &words){
+void Board::getWord(int length,Word& word,int x,int y,std::vector<Word> &words,std::set<std::string> &filteredDictionary){
+  //std::cout<<word.getLetters()<<std::endl;
+  //word.print();
+  //exit(0);
   if(length==word.getLetters().size()){
-    if(dictionary.count(word.getLetters())){
+    if(filteredDictionary.count(word.getLetters())>0){
+     // std::cout<<"Found a word"<<std::endl;
       //std::vector<Word> temp=*(new std::vector<Word>);
       //temp.push_back(word);
       //word.printLetters();
+
       words.push_back(word);
 
       return;
@@ -82,9 +105,17 @@ void Board::getWord(int length,Word word,int x,int y,std::vector<Word> &words){
   for(int i=-1;i<2;i++){
     for(int j=-1;j<2;j++){
       if(!(i==0&&j==0) &&inbounds(x+i,y+j)&&letters[x+i][y+j]!=0&&!word.inPath(x+i,y+j)){
+        //std::cout<<"adding a letter to the path"<<std::endl;
         Word newWord=word.addLetter(x+i,y+j,letters[x+i][y+j]);
+       
+        //filteredDictionary;
+     
+        std::set<std::string> &newDictionary=possibleWords(newWord.getLetters(),filteredDictionary);
+       // std::cout<<"Restricted the dictionary for new path"<<std::endl;
+        //std::cout<<"Restricted dictionary size: "<<newDictionary.size()<<std::endl;
         //std::vector<Word> temp=
-        getWord(length,newWord,x+i,y+j,words);
+        if(newDictionary.size()>0)
+        getWord(length,newWord,x+i,y+j,words,newDictionary);
 
         //output.insert(output.end(),temp.begin(),temp.end());
 

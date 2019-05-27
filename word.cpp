@@ -5,7 +5,7 @@ Word::Word(std::string letters1,std::vector<std::vector<int> > path1){
 	path=path1;
 }
 
-const std::string &Word::getLetters() const{
+std::string &Word::getLetters() {
 	return letters;
 }
 const std::vector<std::vector<int> > &Word::getPath() const{
@@ -33,5 +33,11 @@ Word Word::addLetter(int x,int y,char letter){
 }
 
 void Word::printLetters(){
+	std::cout<<letters<<std::endl;
+}
+void Word::print(){
+	for(int i=0;i<path.size();i++){
+		std::cout<<"["<<path[i][0]<<","<<path[i][1]<<"]"<<",";
+	}
 	std::cout<<letters<<std::endl;
 }
