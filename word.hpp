@@ -13,7 +13,7 @@ private:
 public:
    Word(std::string letters1,std::vector<std::vector<int> > path1);
    std::string& getLetters();
-   const std::vector<std::vector<int> > &getPath() const;
+   std::vector<std::vector<int> > &getPath();
    bool inPath(int x,int y);
    Word addLetter(int x, int y, char letter);
    void printLetters();

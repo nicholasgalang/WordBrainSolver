@@ -8,7 +8,7 @@ Word::Word(std::string letters1,std::vector<std::vector<int> > path1){
 std::string &Word::getLetters() {
 	return letters;
 }
-const std::vector<std::vector<int> > &Word::getPath() const{
+std::vector<std::vector<int> > &Word::getPath() {
 	return path;
 }
 bool Word::inPath(int x,int y){

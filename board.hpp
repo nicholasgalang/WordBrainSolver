@@ -25,6 +25,6 @@ public:
    const int getDimension() const;
    std::set<std::string> &possibleWords(std::string& start,std::set<std::string> &filteredDictionary);
    void getWord(int length,Word& word,int x,int y,std::vector<Word> &words,std::set<std::string> &filteredDictionary);
-   Board drop(std::vector<std::vector<int> > path);
+   Board drop(std::vector<std::vector<int> >& path);
     
 };

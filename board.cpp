@@ -43,7 +43,7 @@ const bool Board::inbounds(int x,int y){
   return true;
 }
 
-Board Board::drop(std::vector<std::vector<int> > path){
+Board Board::drop(std::vector<std::vector<int> >& path){
 
   std::vector< std::vector<char> > newLetters=letters;
   std::vector<int> newLengths=lengths;
