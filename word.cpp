@@ -20,7 +20,7 @@ bool Word::inPath(int x,int y){
 }
 
 //make it copy
-Word Word::addLetter(int x,int y,char letter){
+Word* Word::addLetter(int x,int y,char letter){
 	std::string tempLetters=letters;
 	std::vector<std::vector<int> > tempPath=path;
 	tempLetters.push_back(letter);
@@ -29,7 +29,7 @@ Word Word::addLetter(int x,int y,char letter){
 	v.push_back(x);
 	v.push_back(y);
 	tempPath.push_back(v);
-	return Word(tempLetters,tempPath);
+	return new Word(tempLetters,tempPath);
 }
 
 void Word::printLetters(){

@@ -24,7 +24,7 @@ public:
    const bool inbounds(int x,int y);
    const int getDimension() const;
    std::set<std::string> &possibleWords(std::string& start,std::set<std::string> &filteredDictionary);
-   void getWord(int length,Word& word,int x,int y,std::vector<Word> &words,std::set<std::string> &filteredDictionary);
-   Board drop(std::vector<std::vector<int> >& path);
+   void getWord(int length,Word* word,int x,int y,std::vector<Word*> &words,std::set<std::string> &filteredDictionary);
+   Board* drop(std::vector<std::vector<int> >& path);
     
 };

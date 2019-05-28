@@ -34,11 +34,11 @@ void printVect(const std::vector<std::string> &vector){
 		std::cout<<std::endl;
 
 }
-void printVect(std::vector<Word> &vector){
+void printVect(std::vector<Word*> &vector){
 	for(int i=0;i<vector.size();i++){
 	
 			//std::cout<<vector[i];
-			vector[i].print();
+			vector[i]->print();
 		
 		
 	}
@@ -52,7 +52,7 @@ void printSet(const std::set<std::string> &set){
 	std::cout<<"\n";
 }
 
-void printSolutions( std::vector<std::vector<Word> > solutions){
+void printSolutions( std::vector<std::vector<Word*> > solutions){
 	for(int i=0;i<solutions.size();i++){
 		printVect(solutions[i]);
 	}
@@ -166,39 +166,39 @@ int main () {
 	// board.print();
 	//return 0;
 
-	std::vector<Board> boards;
+	std::vector<Board*> boards;
 	//std::vector<std::vector<std::string> > solutions;
-	std::vector<std::vector<Word> > solutions;
+	std::vector<std::vector<Word*> > solutions;
 	int dimension=board.getDimension();
 
-	boards.push_back(board);
-	solutions.push_back(std::vector<Word>());
+	boards.push_back(&board);
+	solutions.push_back(std::vector<Word*>());
 
 
 
 	for(int l=0;l<lengths.size();l++){
 		std::cout<<l<<std::endl;
-	    std::vector<Board> tempBoards;
+	    std::vector<Board*> tempBoards;
 	   	//std::vector<std::vector<std::string> > tempSolutions;
-	   	std::vector<std::vector<Word > > tempSolutions;
+	   	std::vector<std::vector<Word* > > tempSolutions;
 	   	std::set<std::string> filteredDict=filterDictoinary(dictionary,lengths[l]);
 
 		for(int b=0;b<boards.size();b++){
-			std::vector< std::vector<char> > letters=boards[b].getLetters();
+			std::vector< std::vector<char> > letters=boards[b]->getLetters();
 			//std::set<std::string>  filteredDict=filterDictoinaryBoard(filteredDict2,letters);
 			//std::cout<<filteredDict.size()<<std::endl;
 			for(int i=0;i<dimension;i++){
 				for(int j=0;j<dimension;j++){
 					if(letters[i][j]!=0){
-						std::vector<Word> words;
+						std::vector<Word*> words;
 						Word temp =firstWord(i,j,letters);
-						boards[b].getWord(lengths[l],temp,i,j,words,filteredDict);
+						boards[b]->getWord(lengths[l],&temp,i,j,words,filteredDict);
 
 						for(int w=0;w<words.size();w++){
-							std::vector<Word>  tempSolution=solutions[b];
+							std::vector<Word*>  tempSolution=solutions[b];
 							tempSolution.push_back(words[w]);
 							//boards[b].print();
-							Board droppedBoard=boards[b].drop(words[w].getPath());
+							Board* droppedBoard=boards[b]->drop(words[w]->getPath());
 							//droppedBoard.print();
 							tempBoards.push_back(droppedBoard);
 							tempSolutions.push_back(tempSolution);

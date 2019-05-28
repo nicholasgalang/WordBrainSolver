@@ -15,7 +15,7 @@ public:
    std::string& getLetters();
    std::vector<std::vector<int> > &getPath();
    bool inPath(int x,int y);
-   Word addLetter(int x, int y, char letter);
+   Word* addLetter(int x, int y, char letter);
    void printLetters();
    void print();
     

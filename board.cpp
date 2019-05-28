@@ -43,7 +43,7 @@ const bool Board::inbounds(int x,int y){
   return true;
 }
 
-Board Board::drop(std::vector<std::vector<int> >& path){
+Board* Board::drop(std::vector<std::vector<int> >& path){
 
   std::vector< std::vector<char> > newLetters=letters;
   std::vector<int> newLengths=lengths;
@@ -69,17 +69,17 @@ Board Board::drop(std::vector<std::vector<int> >& path){
   }
 
   //std::cout<<newLetters[0][1]<<std::endl;
-  return *(new Board(newLetters,newLengths,dictionary,dimension));
+  return new Board(newLetters,newLengths,dictionary,dimension);
 
 } 
 
 
-void Board::getWord(int length,Word& word,int x,int y,std::vector<Word> &words,std::set<std::string> &filteredDictionary){
+void Board::getWord(int length,Word* word,int x,int y,std::vector<Word*> &words,std::set<std::string> &filteredDictionary){
   //std::cout<<word.getLetters()<<std::endl;
   //word.print();
   //exit(0);
-  if(length==word.getLetters().size()){
-    if(filteredDictionary.count(word.getLetters())>0){
+  if(length==word->getLetters().size()){
+    if(filteredDictionary.count(word->getLetters())>0){
      // std::cout<<"Found a word"<<std::endl;
       //std::vector<Word> temp=*(new std::vector<Word>);
       //temp.push_back(word);
@@ -104,13 +104,13 @@ void Board::getWord(int length,Word& word,int x,int y,std::vector<Word> &words,s
   //plan to add filter
   for(int i=-1;i<2;i++){
     for(int j=-1;j<2;j++){
-      if(!(i==0&&j==0) &&inbounds(x+i,y+j)&&letters[x+i][y+j]!=0&&!word.inPath(x+i,y+j)){
+      if(!(i==0&&j==0) &&inbounds(x+i,y+j)&&letters[x+i][y+j]!=0&&!word->inPath(x+i,y+j)){
         //std::cout<<"adding a letter to the path"<<std::endl;
-        Word newWord=word.addLetter(x+i,y+j,letters[x+i][y+j]);
+        Word* newWord=word->addLetter(x+i,y+j,letters[x+i][y+j]);
        
         //filteredDictionary;
      
-        std::set<std::string> &newDictionary=possibleWords(newWord.getLetters(),filteredDictionary);
+        std::set<std::string> &newDictionary=possibleWords(newWord->getLetters(),filteredDictionary);
        // std::cout<<"Restricted the dictionary for new path"<<std::endl;
         //std::cout<<"Restricted dictionary size: "<<newDictionary.size()<<std::endl;
         //std::vector<Word> temp=
