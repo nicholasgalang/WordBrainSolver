@@ -58,6 +58,14 @@ void printSolutions( std::vector<std::vector<Word*> > solutions){
 	}
 
 }
+int countCharInString(std::string* word,char letter){
+	int count=0;
+	for(int i=0;i<word->size();i++){
+		if((*word)[i]==letter)
+			count++;
+	}
+	return count;
+}
 int countCharInString(std::string word,char letter){
 	int count=0;
 	for(int i=0;i<word.size();i++){
@@ -67,13 +75,13 @@ int countCharInString(std::string word,char letter){
 	return count;
 }
 
-void readDictionary(std::string filename, std::set<std::string> &words){
+void readDictionary(std::string filename, std::set<std::string*> &words){
 	ifstream myfile;
 	std::string line;
 
 	myfile.open(filename);
 	while(myfile >> line){
-  		words.insert(line);
+  		words.insert(new string(line));
   	}
  
   	
@@ -82,15 +90,15 @@ void readDictionary(std::string filename, std::set<std::string> &words){
 
 
 }
-std::set<std::string>& filterDictoinary(std::set<std::string> &oldDict,int length){
-	std::set<std::string>* filtertedDict= new std::set<std::string>();
+std::set<std::string*>& filterDictoinary(std::set<std::string*> &oldDict,int length){
+	std::set<std::string*>* filtertedDict= new std::set<std::string*>();
 	for(auto word:oldDict){
-		if(word.size()==length)
+		if(word->size()==length)
 			filtertedDict->insert(word);
 	}
 	return *filtertedDict;
 }
-std::set<std::string>& filterDictoinaryBoard(std::set<std::string> &oldDict,std::vector< std::vector<char> > board){
+std::set<std::string*>& filterDictoinaryBoard(std::set<std::string*> &oldDict,std::vector< std::vector<char> > board){
 	std::string letters;
 	for(int i=0;i<board.size();i++){
 		for(int j=0;j<board[i].size();j++){
@@ -100,11 +108,11 @@ std::set<std::string>& filterDictoinaryBoard(std::set<std::string> &oldDict,std:
 	}
 	//std::cout<<letters<<std::endl;
 
-	std::set<std::string>* filtertedDict= new std::set<std::string>();
+	std::set<std::string*>* filtertedDict= new std::set<std::string*>();
 	for(auto word:oldDict){
 		bool add=true;
-		for(int i=0;i<word.size();i++){
-			if(countCharInString(letters,word[i])<countCharInString(word,word[i])){
+		for(int i=0;i<word->size();i++){
+			if(countCharInString(letters,(*word)[i])<countCharInString(word,(*word)[i])){
 				add=false;
 				break;
 			}
@@ -129,7 +137,7 @@ Word firstWord(int i,int j,std::vector< std::vector<char> > &letters){
 }
 
 int main () {
-	std::set<std::string> dictionary;
+	std::set<std::string*> dictionary;
 	readDictionary("words.txt",dictionary);
 	std::cout << dictionary.size()<< std::endl;
 
@@ -181,11 +189,14 @@ int main () {
 	    std::vector<Board*> tempBoards;
 	   	//std::vector<std::vector<std::string> > tempSolutions;
 	   	std::vector<std::vector<Word* > > tempSolutions;
-	   	std::set<std::string> filteredDict=filterDictoinary(dictionary,lengths[l]);
-
+	   	std::set<std::string*> filteredDict2=filterDictoinary(dictionary,lengths[l]);
+	   	std::cout<<"Number of boards: "<<boards.size()<<std::endl;
 		for(int b=0;b<boards.size();b++){
+			if(b%100==0){
+				std::cout<<b<<std::endl;
+			}
 			std::vector< std::vector<char> > letters=boards[b]->getLetters();
-			//std::set<std::string>  filteredDict=filterDictoinaryBoard(filteredDict2,letters);
+			std::set<std::string*>  filteredDict=filterDictoinaryBoard(filteredDict2,letters);
 			//std::cout<<filteredDict.size()<<std::endl;
 			for(int i=0;i<dimension;i++){
 				for(int j=0;j<dimension;j++){

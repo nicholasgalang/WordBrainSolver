@@ -6,9 +6,9 @@ const std::vector< std::vector<char> > &Board::getLetters() const{
 	return letters;
 }
 
-std::set<std::string> &Board::possibleWords(std::string &start,std::set<std::string> &filteredDictionary){
+std::set<std::string*> &Board::possibleWords(std::string &start,std::set<std::string*> &filteredDictionary){
 
-  std::set<std::string> *newDict=new  std::set<std::string>();
+  std::set<std::string*> *newDict=new  std::set<std::string*>();
   //std::cout<<"Filtering Dictionary"<<std::endl;
     //std::cout<<filteredDictionary.size()<<std::endl;
   // for (std::set<std::string>::iterator it=filteredDictionary.begin(); it!=filteredDictionary.end(); ++it){
@@ -19,7 +19,7 @@ std::set<std::string> &Board::possibleWords(std::string &start,std::set<std::str
 
   // }
   for(auto word:filteredDictionary){
-    if(word.substr(0,start.size())==start)
+    if(word->substr(0,start.size())==start)
        newDict->insert(word);  
   }
    //std::cout<<3<<std::endl;
@@ -73,13 +73,24 @@ Board* Board::drop(std::vector<std::vector<int> >& path){
 
 } 
 
+bool Board::InSet(std::string& canidate,std::set<std::string*> &filteredDictionary){
+   for(auto word:filteredDictionary){
+    if(*word==canidate)
+       return true; 
+  }
+  return false;
+}
 
-void Board::getWord(int length,Word* word,int x,int y,std::vector<Word*> &words,std::set<std::string> &filteredDictionary){
+
+
+
+void Board::getWord(int length,Word* word,int x,int y,std::vector<Word*> &words,std::set<std::string*> &filteredDictionary){
   //std::cout<<word.getLetters()<<std::endl;
   //word.print();
   //exit(0);
   if(length==word->getLetters().size()){
-    if(filteredDictionary.count(word->getLetters())>0){
+    //if(filteredDictionary.count(word->getLetters())>0){
+    if(InSet(word->getLetters(),filteredDictionary)){
      // std::cout<<"Found a word"<<std::endl;
       //std::vector<Word> temp=*(new std::vector<Word>);
       //temp.push_back(word);
@@ -110,7 +121,7 @@ void Board::getWord(int length,Word* word,int x,int y,std::vector<Word*> &words,
        
         //filteredDictionary;
      
-        std::set<std::string> &newDictionary=possibleWords(newWord->getLetters(),filteredDictionary);
+        std::set<std::string*> &newDictionary=possibleWords(newWord->getLetters(),filteredDictionary);
        // std::cout<<"Restricted the dictionary for new path"<<std::endl;
         //std::cout<<"Restricted dictionary size: "<<newDictionary.size()<<std::endl;
         //std::vector<Word> temp=
@@ -130,7 +141,7 @@ void Board::getWord(int length,Word* word,int x,int y,std::vector<Word*> &words,
 
 }
 
-Board::Board(std::vector< std::vector<char> > &newLetters,std::vector<int> &newLengths,std::set<std::string> &newDictionary,int newdDimension){
+Board::Board(std::vector< std::vector<char> > &newLetters,std::vector<int> &newLengths,std::set<std::string*> &newDictionary,int newdDimension){
   letters=newLetters;
   lengths=newLengths;
   dictionary=newDictionary;
@@ -152,7 +163,7 @@ void Board::print(){
      std::cout<<endl;
 }
 
-Board::Board (std::string filename,std::set<std::string> &dictionary1) {
+Board::Board (std::string filename,std::set<std::string*> &dictionary1) {
   dictionary=dictionary1;
  ifstream myfile;
   myfile.open (filename);
